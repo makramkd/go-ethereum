@@ -162,6 +162,11 @@ func (c *Client) sendBatchHTTP(ctx context.Context, op *requestOp, msgs []*jsonr
 	}
 	defer respBody.Close()
 	var respmsgs []jsonrpcMessage
+	b, err := ioutil.ReadAll(respBody)
+	if err != nil {
+		return err
+	}
+	fmt.Println("raw response sendBatchHTTP:", string(b))
 	if err := json.NewDecoder(respBody).Decode(&respmsgs); err != nil {
 		return err
 	}
